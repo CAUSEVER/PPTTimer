@@ -1,0 +1,23 @@
+﻿<UserControl x:Name="MyDynamicButton" x:Class="PPTTimer.controls.Dynamic.DynamicButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PPTTimer.controls.Dynamic"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="450">
+    <Grid>
+        <Image x:Name="FrontStop"
+       Stretch="Fill" Panel.ZIndex="1" Opacity="0"/>
+
+        <Image x:Name="FrontStart"
+       Stretch="Fill" Panel.ZIndex="1" Opacity="0"/>
+
+        <Image x:Name="BehindStop"
+           Stretch="Fill" Panel.ZIndex="0" Opacity="0"/>
+
+        <Image x:Name="BehindStart"
+           Stretch="Fill" Panel.ZIndex="0" Opacity="1"/>
+        <!-- 其他控件和布局... -->
+    </Grid>
+</UserControl>
