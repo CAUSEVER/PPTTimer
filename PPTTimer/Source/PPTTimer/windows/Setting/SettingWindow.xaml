@@ -5,8 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PPTTimer.windows.Setting"
         mc:Ignorable="d"
-        Title="SettingWindow" Height="450" Width="300">
+        Title="SettingWindow" Height="300" Width="250">
     <Grid>
-        
+        <TextBlock HorizontalAlignment="Left" Margin="30,30,0,0" TextWrapping="Wrap" Text="倒计时时间" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,60,0,0" TextWrapping="Wrap" Text="问题时间" VerticalAlignment="Top"/>
+        <TextBox x:Name="countertime" HorizontalAlignment="Left" Margin="100,30,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="questiontime" HorizontalAlignment="Left" Margin="100,60,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Button Content="保存" HorizontalAlignment="Left" Margin="192,229,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+
     </Grid>
 </Window>

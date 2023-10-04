@@ -2,6 +2,7 @@
 using PPTTimer.windows.Setting;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -13,6 +14,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
@@ -26,8 +28,8 @@ namespace PPTTimer
     public partial class MainWindow : Window
     {
         private string pathdata = "data/data.txt";
-        private double defaulttime = 0;
-        private double defaultwarntime = 0;
+        public double defaulttime = 0;
+        public double defaultwarntime = 0;
 
         public MainWindow()
         {
@@ -112,6 +114,62 @@ namespace PPTTimer
         }//实现窗口拖动，禁止放大与缩小
         #endregion
 
+        #region 窗口等比例放缩
+        //最后的宽度与高度
+        private int LastWidth;
+        private int LastHeight;
+        //这个属性是指 窗口的宽度和高度的比例（宽度/高度）(240:118)
+        private float AspectRatio = 2.0f / 1.0f;
+
+        /// <summary>
+        /// 捕获窗口拖拉消息
+        /// (Capturing window drag messages)
+        /// </summary>
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            HwndSource source = HwndSource.FromVisual(this) as HwndSource;
+            if (source != null)
+            {
+                source.AddHook(new HwndSourceHook(WinProc));
+            }
+        }
+
+        public const Int32 WM_EXITSIZEMOVE = 0x0232;
+
+        /// <summary>
+        /// 重载窗口消息处理函数
+        /// (Overload window message processing function)
+        /// </summary>
+        private IntPtr WinProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, ref Boolean handled)
+        {
+            IntPtr result = IntPtr.Zero;
+            switch (msg)
+            {
+                //处理窗口消息 (Handle window messages)
+                case WM_EXITSIZEMOVE:
+                    {
+                        //上下拖拉窗口 (Drag window vertically)
+                        if (this.Height != LastHeight)
+                        {
+                            this.Width = this.Height * AspectRatio;
+                        }
+                        // 左右拖拉窗口 (Drag window horizontally)
+                        else if (this.Width != LastWidth)
+                        {
+                            this.Height = this.Width / AspectRatio;
+                        }
+
+                        LastWidth = (int)this.Width;
+                        LastHeight = (int)this.Height;
+                        break;
+                    }
+            }
+
+            return result;
+        }
+        #endregion
+
         #region 各种操作按钮
         private void AddThing_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -134,9 +192,18 @@ namespace PPTTimer
             }
         }//重启键
 
+        public void Receive(string a,string b)
+        {
+            defaulttime = Double.Parse(a);
+            defaultwarntime = Double.Parse(b) ;
+            Save();
+            timeDisplay(string.Empty, defaulttime);
+        }
+
         private void Setting_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            SettingWindow settingWindow = new SettingWindow();
+            SettingWindow settingWindow = new SettingWindow(this);
+            settingWindow.sendMessage = Receive;
             settingWindow.Show();
         }
         //设置键
@@ -258,7 +325,7 @@ namespace PPTTimer
         //如下一段为保存信息的代码
         public void Save()
         {
-            string save = "默认倒计时时间=" + defaulttime.ToString() + "\n" + "默认警告时间=" + defaultwarntime.ToString();
+            string save = "默认倒计时时间=" + defaulttime.ToString() + "\n" + "默认问题时间=" + defaultwarntime.ToString();
 
             if (!StartAndStop.IsStoping)//保证未暂停状态下时间依旧能保存
             {
@@ -376,7 +443,8 @@ namespace PPTTimer
                 timer.Tick += timer_Tick;
                 timer.Start();
 
-                time.Foreground = new SolidColorBrush(Colors.Black);
+                time.Opacity = 1.0;
+                //time.Foreground = new SolidColorBrush(Colors.Black);
             }
             else
             {
@@ -386,7 +454,8 @@ namespace PPTTimer
                 times = change;
                 timer.Stop();
 
-                time.Foreground = new SolidColorBrush(Colors.Gray);
+                time.Opacity = 0.6;
+                //time.Foreground = new SolidColorBrush(Colors.Gray);
 
                 timeDisplay(string.Empty, defaulttime - change);
             }
@@ -459,9 +528,12 @@ namespace PPTTimer
 
         #region 判断PPT是否处于放映状态
         private DispatcherTimer ppttimer = new DispatcherTimer();
+        private bool t;
 
         private void InitializeTimer()
         {
+            timer.Interval = TimeSpan.FromSeconds(1);
+
             judgePPTRunning.Interval = TimeSpan.FromMilliseconds(1);
             judgePPTRunning.Tick += JudgePPTRunning_Tick;
             judgePPTRunning.Start();
@@ -487,11 +559,13 @@ namespace PPTTimer
                 }
                 catch (COMException)
                 {
-                    isInSlideShow = false;  // PowerPoint 不在幻灯片放映模式下
+                    isInSlideShow = false;  //PowerPoint 不在幻灯片放映模式下
+                    t = false;
                 }
 
-                if (isInSlideShow && !StartAndStop.IsStoping)
+                if (isInSlideShow && !StartAndStop.IsStoping && !t)
                 {
+                    t = true;
                     SimulateStartAndStopMouseLeftButtonDown();
                 }
             }
@@ -507,6 +581,7 @@ namespace PPTTimer
             StartAndStop.RaiseEvent(args);
         }
         #endregion
+
     }
 
     public partial class App : System.Windows.Application

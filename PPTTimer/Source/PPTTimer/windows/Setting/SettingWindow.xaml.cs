@@ -14,14 +14,21 @@ using System.Windows.Shapes;
 
 namespace PPTTimer.windows.Setting
 {
-    /// <summary>
-    /// SettingWindow.xaml 的交互逻辑
-    /// </summary>
     public partial class SettingWindow : Window
     {
-        public SettingWindow()
+        public delegate void SendMessage(string defaulttime, string defaultwarntime);
+        public SendMessage sendMessage;
+
+        public SettingWindow(MainWindow mainwindow)
         {
             InitializeComponent();
+            countertime.Text = (mainwindow.defaulttime).ToString();
+            questiontime.Text=(mainwindow.defaultwarntime).ToString();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            sendMessage(countertime.Text, questiontime.Text);
         }
     }
 }
