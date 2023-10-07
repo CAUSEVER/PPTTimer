@@ -114,61 +114,61 @@ namespace PPTTimer
         }//实现窗口拖动，禁止放大与缩小
         #endregion
 
-        #region 窗口等比例放缩
-        //最后的宽度与高度
-        private int LastWidth;
-        private int LastHeight;
-        //这个属性是指 窗口的宽度和高度的比例（宽度/高度）(240:118)
-        private float AspectRatio = 2.0f / 1.0f;
+        //#region 窗口等比例放缩
+        ////最后的宽度与高度
+        //private int LastWidth;
+        //private int LastHeight;
+        ////这个属性是指 窗口的宽度和高度的比例（宽度/高度）(240:118)
+        //private float AspectRatio = 2.0f / 1.0f;
 
-        /// <summary>
-        /// 捕获窗口拖拉消息
-        /// (Capturing window drag messages)
-        /// </summary>
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            base.OnSourceInitialized(e);
-            HwndSource source = HwndSource.FromVisual(this) as HwndSource;
-            if (source != null)
-            {
-                source.AddHook(new HwndSourceHook(WinProc));
-            }
-        }
+        ///// <summary>
+        ///// 捕获窗口拖拉消息
+        ///// (Capturing window drag messages)
+        ///// </summary>
+        //protected override void OnSourceInitialized(EventArgs e)
+        //{
+        //    base.OnSourceInitialized(e);
+        //    HwndSource source = HwndSource.FromVisual(this) as HwndSource;
+        //    if (source != null)
+        //    {
+        //        source.AddHook(new HwndSourceHook(WinProc));
+        //    }
+        //}
 
-        public const Int32 WM_EXITSIZEMOVE = 0x0232;
+        //public const Int32 WM_EXITSIZEMOVE = 0x0232;
 
-        /// <summary>
-        /// 重载窗口消息处理函数
-        /// (Overload window message processing function)
-        /// </summary>
-        private IntPtr WinProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, ref Boolean handled)
-        {
-            IntPtr result = IntPtr.Zero;
-            switch (msg)
-            {
-                //处理窗口消息 (Handle window messages)
-                case WM_EXITSIZEMOVE:
-                    {
-                        //上下拖拉窗口 (Drag window vertically)
-                        if (this.Height != LastHeight)
-                        {
-                            this.Width = this.Height * AspectRatio;
-                        }
-                        // 左右拖拉窗口 (Drag window horizontally)
-                        else if (this.Width != LastWidth)
-                        {
-                            this.Height = this.Width / AspectRatio;
-                        }
+        ///// <summary>
+        ///// 重载窗口消息处理函数
+        ///// (Overload window message processing function)
+        ///// </summary>
+        //private IntPtr WinProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, ref Boolean handled)
+        //{
+        //    IntPtr result = IntPtr.Zero;
+        //    switch (msg)
+        //    {
+        //        //处理窗口消息 (Handle window messages)
+        //        case WM_EXITSIZEMOVE:
+        //            {
+        //                //上下拖拉窗口 (Drag window vertically)
+        //                if (this.Height != LastHeight)
+        //                {
+        //                    this.Width = this.Height * AspectRatio;
+        //                }
+        //                // 左右拖拉窗口 (Drag window horizontally)
+        //                else if (this.Width != LastWidth)
+        //                {
+        //                    this.Height = this.Width / AspectRatio;
+        //                }
 
-                        LastWidth = (int)this.Width;
-                        LastHeight = (int)this.Height;
-                        break;
-                    }
-            }
+        //                LastWidth = (int)this.Width;
+        //                LastHeight = (int)this.Height;
+        //                break;
+        //            }
+        //    }
 
-            return result;
-        }
-        #endregion
+        //    return result;
+        //}
+        //#endregion
 
         #region 各种操作按钮
         private void AddThing_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
