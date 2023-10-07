@@ -370,6 +370,10 @@ namespace PPTTimer
             AddThing.Visibility = Visibility.Visible;
             StartAndStop.Visibility = Visibility.Visible;
             restart.Visibility = Visibility.Visible;
+            icon.Visibility = Visibility.Visible;
+            exit.Visibility = Visibility.Visible;
+            minimize.Visibility = Visibility.Visible;
+            Setting.Visibility = Visibility.Visible;
         }
 
         private void MainWindow_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
@@ -377,6 +381,10 @@ namespace PPTTimer
             AddThing.Visibility = Visibility.Hidden;
             StartAndStop.Visibility = Visibility.Hidden;
             restart.Visibility = Visibility.Hidden;
+            icon.Visibility = Visibility.Hidden;
+            exit.Visibility = Visibility.Hidden;
+            minimize.Visibility = Visibility.Hidden;
+            Setting.Visibility = Visibility.Hidden;
         }
 
         private double ReadNum(string data)

@@ -6,10 +6,10 @@
         xmlns:local="clr-namespace:PPTTimer" xmlns:Static="clr-namespace:PPTTimer.controls.Static" xmlns:Dynamic="clr-namespace:PPTTimer.controls.Dynamic"
         mc:Ignorable="d"
         
-        Title="CountDown" Height="120" Width="240"
+        Title="CountDown" Height="100" Width="200"
         Opacity="0.8"
         MaxHeight="240" MaxWidth="480"
-        MinHeight="120" MinWidth="240">
+        MinHeight="60" MinWidth="120">
     <Window.Style>
         <Style TargetType="{x:Type Window}">
             <Setter Property="WindowStyle" Value="None"/>
@@ -57,24 +57,15 @@
 
                 <Grid ShowGridLines="False">
 
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                    </Grid.RowDefinitions>
-
                     <!--底层内容-->
 
-                    <StackPanel Grid.Row="0" Orientation="Horizontal">
-                        <Image Source="/pic/PPTTimer.png" Width="15"
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                        <Image x:Name="icon" Source="/pic/PPTTimer.png" Width="15"
                            Height="15" HorizontalAlignment="Left"
-                           Margin="4,0,0,0"/>
-                        <TextBlock x:Name="myline"
-                    Text="PPTTimer" VerticalAlignment="Center" HorizontalAlignment="Left" Height="auto"
-                    Width="auto" Margin="1,0,0,0" FontSize="13"/>
+                           Margin="4,6.5,0,0"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" FlowDirection="RightToLeft">
+                    <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" VerticalAlignment="Top">
                         <Static:StaticButton x:Name="exit"
                                  Height="28" Width="28"
                                  Cursor="Hand" BorderBrush="{x:Null}"
@@ -93,11 +84,11 @@
                     </StackPanel>
                     <!--标题行内容-->
 
-                    <Grid Grid.Row="1">
-                        <TextBlock x:Name="time" Text="空闲中" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="45" Margin="0,-1,0,0"/>
+                    <Grid>
+                        <TextBlock x:Name="time" Text="-20:00" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="75" Margin="0,0,0,0"/>
                     </Grid>
                     <!--操作行内容-->
-                    <Grid Grid.Row="2">
+                    <Grid>
                         <StackPanel Orientation="Horizontal" FlowDirection="LeftToRight" Margin="0,2,0,0">
                             <Static:StaticButton x:Name="AddThing" Height="20" Width="20" BorderBrush="Transparent" Cursor="Hand"
                                              ToolTip="添加一个新的倒计时时间"
@@ -122,7 +113,7 @@
                         </StackPanel>
                     </Grid>
 
-                    <Grid Grid.Row="2">
+                    <Grid>
                         <Static:StaticButton x:Name="Setting" HorizontalAlignment="Right" Height="20" Width="20" Margin="2" BorderBrush="{x:Null}" Cursor="Hand"
                                        BehindImage="/pic/setting.png"
                                        VerticalAlignment="Bottom"
